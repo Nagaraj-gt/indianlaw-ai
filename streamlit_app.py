@@ -5,34 +5,30 @@ import pandas as pd
 import streamlit as st
 
 """
-# Welcome to Streamlit!
-
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
-
-In the meantime, below is an example of what you can do with just a few lines of code:
+Streamlit application to take the input value and return the top cases related to that section
 """
 
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+# Define a function to process the input string
+def process_string(input_string):
+    
+    return input_string.split()
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+# Streamlit app content
+def main():
+    st.title("Retrieve top cases relevant to the IPC Section")
+    
+    # Create an input widget for the user to enter a string
+    user_input = st.text_input("Enter Your Section: ")
 
-    points_per_turn = total_points / num_turns
+    if st.button("Process"):
+        if user_input:
+            # Call the processing function
+            processed_result = process_string(user_input)
+            st.write("Relevant Cases:")
+            st.write(processed_result)
+        else:
+            st.warning("Please enter a string to process.")
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
-
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+if __name__ == "__main__":
+    main()
